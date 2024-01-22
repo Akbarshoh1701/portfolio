@@ -24,5 +24,6 @@ urlpatterns = [
     path('', include('portfolo_app.urls'))
 ]
 
-if settings.DEBUD:
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
