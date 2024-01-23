@@ -1,7 +1,10 @@
 from django.contrib import admin
-from .models import *
+from .models import (About, Fact, Skills, Sumary, Education, ProfessionalExperience, Portfolio,
+                     TypeService, Testimonials, Contact, Category)
 
 # Register your models here.
 
-admin.site.register([About, Fact, Skills, Programs, Resume, Sumary, Education, ProfessionalExperience, Portfolio,
-                     Services, TypeService,  Testimonials, Comment, Contact, ])
+admin.site.register([About, Fact, Skills, Sumary, Education, ProfessionalExperience, Portfolio,
+                     TypeService,  Testimonials, Contact, Category])
+
+

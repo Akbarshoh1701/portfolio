@@ -2,110 +2,118 @@ from django.db import models
 
 
 # Create your models here.
+class BaseModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-class About(models.Model):
+
+class About(BaseModel):
     about_info = models.CharField(max_length=255)
-    name_feld = models.CharField(max_length=255)
-    name_filt_custom = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    name_custom = models.CharField(max_length=255)
     birthday = models.DateField()
-    webbsite = models.CharField(max_length=255)
+    website = models.CharField(max_length=255)
     phone = models.IntegerField()
     city = models.TextField(max_length=255)
-    age = models.IntegerField()
+    age = models.SmallIntegerField()
     degree = models.TextField(max_length=255)
     phemailone = models.EmailField()
     freelance = models.TextField(max_length=255)
     description = models.CharField(max_length=255)
 
-class Fact(models.Model):
+    def __str__(self):
+        return self.name + "About"
+
+
+class Fact(BaseModel):
     name = models.CharField(max_length=255)
     title = models.TextField()
     img = models.ImageField()
     number = models.IntegerField()
-    tex_img = models.CharField(max_length=255)
 
-class Skills(models.Model):
+    def __str__(self):
+        return self.name + 'Fact'
+
+
+class Skills(BaseModel):
     name = models.TextField(max_length=255)
-    text = models.TextField()
+    percent = models.SmallIntegerField()
 
-class Programs(models.Model):
-    taytil = models.CharField(max_length=255)
-    interest = models.IntegerField()
-    skills = models.ForeignKey(Skills, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name + 'Skills'
 
 
-class Resume(models.Model):
-    title = models.CharField(max_length=255)
-    text = models.TextField()
-
-class Sumary(models.Model):
+class Sumary(BaseModel):
     name = models.CharField(max_length=255)
     text = models.TextField()
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     email = models.EmailField()
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name + 'Sumary'
 
 
-class Education(models.Model):
-    taytel = models.CharField(max_length=255)
+class Education(BaseModel):
+    title = models.CharField(max_length=255)
     start_year = models.IntegerField()
     end_year = models.IntegerField(null=True, blank=True)
     where_he_studied = models.CharField(max_length=255)
     text = models.TextField()
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
-    def is_currently_enrolled(self):
-        return self.end_year is None
+    def __str__(self):
+        return self.title + 'Educatin'
 
-    def save(self, *args, **kwargs):
-        if self.is_currently_enrolled():
-            self.end_year = timezone.now().year
-        super().save(*args, **kwargs)
 
-class ProfessionalExperience(models.Model):
-    taytel = models.CharField(max_length=255)
+class ProfessionalExperience(BaseModel):
+    title = models.CharField(max_length=255)
     start_year = models.IntegerField()
     end_year = models.IntegerField(null=True, blank=True)
     where_it_works = models.CharField(max_length=255)
     text = models.TextField()
-    resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
 
-    def is_currently_enrolled(self):
-        return self.end_year is None
-
-    def save(self, *args, **kwargs):
-        if self.is_currently_enrolled():
-            self.end_year = timezone.now().year
-        super().save(*args, **kwargs)
-
-class Portfolio(models.Model):
-    titel = models.CharField(max_length=255)
+    def __str__(self):
+        return self.title + 'ProfessionalExperience'
 
 
+class Category(BaseModel):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
 
-class Services(models.Model):
-    titel = models.CharField(max_length=255)
 
-class TypeService(models.Model):
-    titel = models.CharField(max_length=255)
+class Portfolio(BaseModel):
+    categories = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="portfolios")
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='portfolio')
+    text = models.CharField(max_length=255)
+    data = models.DateTimeField()
+    url = models.URLField()
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name + 'Portfolio'
+
+
+class TypeService(BaseModel):
+    title = models.CharField(max_length=255)
     text = models.TextField()
     img = models.ImageField()
-    services = models.ForeignKey(Services, on_delete=models.CASCADE)
 
-class Testimonials(models.Model):
-    text = models.TextField()
+    def __str__(self):
+        return self.title + 'TypeService'
 
 
-class Comment(models.Model):
+class Testimonials(BaseModel):
     name = models.CharField(max_length=255)
     job = models.CharField(max_length=255)
     img = models.ImageField()
     text = models.TextField()
 
+    def __str__(self):
+        return self.name
 
-class Contact(models.Model):
-    titel = models.CharField(max_length=255)
+
+class Contact(BaseModel):
     location = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     call = models.IntegerField()
