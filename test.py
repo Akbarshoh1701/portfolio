@@ -722,3 +722,11 @@ x = """
 
 </html>
 """
+
+
+#
+# from django.db import models
+# from datetime import datetime
+#
+# class YourModel(models.Model):
+#     nd_year = models.IntegerField(null=True, blank=True, default=datetime.now().year)

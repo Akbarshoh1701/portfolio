@@ -1,6 +1,7 @@
 from django.urls import path
-from portfolo_app.views import IndexPich
+from portfolo_app.views import IndexPage, PortfolioDetail
 
 urlpatterns =[
-    path('', IndexPich.as_view(), name="homepage")
+    path('', IndexPage.as_view(), name="homepage"),
+    path('detail/<int:pk>',  PortfolioDetail, name='detail')
 ]
